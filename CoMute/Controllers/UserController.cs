@@ -28,18 +28,18 @@ namespace CoMute.Controllers
                 if (user != null)
                 {
                     //then get user details if the email and password match the user in the database.
-                    var userDetails = context.Users.Where(u => u.Email == user.Email && u.Password == user.Password).First();
+                    var userDetails = context.Users.Where(u => u.Email == user.Email && u.Password == user.Password).ToList();
                     //check if the user exist
-                    if (userDetails != null)
+                    if (userDetails.Count() > 0)
                     {
                         //then assigned the user details to a static property
-                        UserCarPoolViewModel.user = userDetails;
+                        UserCarPoolViewModel.user = userDetails[0];
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         //use this approached because viewbag only works with method that have corresponding view
-                        Response.WriteAsync("<script>alert('Please check your credentials and try again');window.location = 'Search';</script>");
+                        Response.WriteAsync("<script>alert('Please check your credentials and try again');</script>");
                     }
                 }
             }
